@@ -13,19 +13,56 @@ body {
 
 .main-container {
     display: flex;
+    flex-direction: column;
     min-height: 100vh;
     background: #36393F;
-
-
 }
-.first-container {
 
+/**/
+
+.navi-bar {
     display: flex;
-    flex-direction: row;
-    min-height: 100vh;
+    padding-bottom: 10px;
+    height: 60px;
     background: #36393F;
 
 }
+
+.first-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    background: #36393F;
+    padding: 30px;
+}
+
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.todo {
+    display: flex;
+    min-width: 100%;
+    padding: 5px;
+}
+
+/*.top_section {*!*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    flex-direction: column;*/
+/*    padding: 15px 0px;*/
+/*}
+
+/*.first-container {*/
+
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*    min-height: 100vh;*/
+/*    background: #36393F;*/
+
+/*}*/
 
 .second-container {
     flex: 0 0 100px ;
@@ -52,12 +89,7 @@ body {
     flex: 1;
 }
 
-.top_section {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding: 15px 0px;
-}
+
 
 .logo {
     font-size: 30px;
@@ -168,13 +200,7 @@ body {
     flex: 3;
 }
 
-.navi-bar {
-    display: flex;
-    padding-bottom: 10px;
-    height: 60px;
-    background: #36393F;
 
-}
 
 .main-content {
     display: flex;

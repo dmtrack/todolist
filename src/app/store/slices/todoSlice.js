@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import config from "../../../app/config.json";
+import axios from "axios";
+const URL = config.apiEndpoint;
 
 const initialState = {
-  entities: null,
+  entities: [],
   loading: false,
 };
 
 const todoSlice = createSlice({
   name: "todos",
-  loading: false,
   initialState: initialState,
   reducers: {
     todosRequested(state) {
@@ -17,21 +19,49 @@ const todoSlice = createSlice({
       state.entities = action.payload;
       state.loading = false;
     },
-    getTodo(state, action) {
-      state.entities = action.payload;
+    addTodo(state, action) {
+      state.entities.push({
+        id: new Date().toISOString(),
+        name: action.payload.name,
+        description: action.payload.description,
+        completed: false,
+      });
       state.loading = false;
+    },
+    removeTodo(state, action) {
+      state.entities = state.entities.filter(
+        (todo) => todo.id !== action.payload
+      );
+    },
+    toggleTodo: (state, action) => {
+      const toggledTodo = state.entities.find(
+        (todo) => todo.id === action.payload
+      );
+      toggledTodo.completed = !toggledTodo.completed;
     },
   },
 });
 
-export const { todosRequested, getAllTodos, getTodo } = todoSlice.actions;
+export const { todosRequested, getAllTodos, addTodo, removeTodo, toggleTodo } =
+  todoSlice.actions;
 
 export function fetchTodos() {
   return async function (dispatch) {
     dispatch(todosRequested());
     try {
-      const content = await getAllTodos().then((data) => data);
-      dispatch(getAllTodos(content));
+      const content = await axios.get(URL).then((data) => data);
+      dispatch(getAllTodos(content.data));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
+
+export function handleRemoveTodo(id) {
+  return async function (dispatch) {
+    try {
+      console.log(id);
+      dispatch(removeTodo(id));
     } catch (error) {
       console.log(error.message);
     }
@@ -49,8 +79,5 @@ export function fetchTodos() {
 //     }
 //   };
 // }
-
-export const getAllList = () => (state) => state.todos.entities;
-export const getTodosIsLoading = () => (state) => state.todos.loading;
 
 export default todoSlice.reducer;

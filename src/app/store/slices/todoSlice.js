@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import config from "../../../app/config.json";
 import axios from "axios";
+import httpService from "../../../httpService";
 const URL = config.apiEndpoint;
 
 const initialState = {
@@ -21,7 +22,7 @@ const todoSlice = createSlice({
     },
     addTodo(state, action) {
       state.entities.push({
-        id: new Date().toISOString(),
+        id: action.payload.id,
         name: action.payload.name,
         description: action.payload.description,
         completed: false,
@@ -49,8 +50,8 @@ export function fetchTodos() {
   return async function (dispatch) {
     dispatch(todosRequested());
     try {
-      const content = await axios.get(URL).then((data) => data);
-      dispatch(getAllTodos(content.data));
+      const { data } = await httpService.get(`${URL}todos`);
+      dispatch(getAllTodos(data));
     } catch (error) {
       console.log(error.message);
     }
@@ -60,24 +61,39 @@ export function fetchTodos() {
 export function handleRemoveTodo(id) {
   return async function (dispatch) {
     try {
-      console.log(id);
       dispatch(removeTodo(id));
+      const { data } = await httpService.delete(`${URL}todos/${id}`);
+      console.log(data);
     } catch (error) {
       console.log(error.message);
     }
   };
 }
 
-// export function fetchTodo(id) {
-//   return async function (dispatch) {
-//     dispatch(todosRequested);
-//     try {
-//       const content = await getTodoById(id).then((data) => data.meals[0]);
-//       dispatch(getTodos(content));
-//     } catch (error) {
-//       console.log(error.message);
-//     }
-//   };
-// }
+export function handleAddTodo(data) {
+  return async function (dispatch) {
+    try {
+      const newObj = { ...data, id: Date.now(), completed: false };
+      dispatch(addTodo(newObj));
+      const content = await httpService.put(`${URL}todos/${newObj.id}`, newObj);
+      console.log(content);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
+
+export function handleFinishTodo(data) {
+  return async function (dispatch) {
+    try {
+      dispatch(toggleTodo(data.id));
+      data.completed = !data.completed;
+      console.log(data, "toggle data");
+      const content = await httpService.put(`${URL}todos/${data.id}`, data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+}
 
 export default todoSlice.reducer;

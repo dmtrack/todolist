@@ -1,30 +1,55 @@
-// import axios from "axios";
-// import configFile from "../src/app/config.json";
-//
-// axios.defaults.baseURL = configFile.apiEndpoint;
-// axios.interceptors.request.use(
-//   function (config) {
-//     console.log(config);
-//     config.url = config.url.slice(0, -1) + ".json";
-//     return config;
-//   },
-//   function (error) {
-//     return Promise.reject(error);
-//   }
-// );
-//
-// axios.interceptors.response.use(
-//   (res) => res,
-//   function (error) {
-//     return Promise.reject(error);
-//   }
-// );
-//
-// const httpService = {
-//   get: http.get,
-//   post: http.post,
-//   put: http.put,
-//   delete: http.delete,
-//   patch: http.patch,
-// };
-// export default httpService;
+import axios from "axios";
+
+import configFile from "../src/app/config.json";
+
+const http = axios.create({
+  baseURL: configFile.apiEndpoint,
+});
+
+http.interceptors.request.use(
+  async function (config) {
+    const containSlash = /\/$/gi.test(config.url);
+    config.url =
+      (containSlash ? config.url.slice(0, -1) : config.url) + ".json";
+
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
+function transormData(data) {
+  return data && !data._id
+    ? Object.keys(data).map((key) => ({
+        ...data[key],
+      }))
+    : data;
+}
+
+http.interceptors.response.use(
+  (res) => {
+    res.data = transormData(res.data);
+    return res;
+  },
+  function (error) {
+    const expectedErrors =
+      error.response &&
+      error.response.status >= 400 &&
+      error.response.status < 500;
+
+    if (!expectedErrors) {
+      console.log(error);
+      console.error("Something was wrong. Try it later");
+    }
+    return Promise.reject(error);
+  }
+);
+const httpService = {
+  get: http.get,
+  post: http.post,
+  put: http.put,
+  delete: http.delete,
+  patch: http.patch,
+};
+export default httpService;

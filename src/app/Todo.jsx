@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
+  handleFinishTodo,
   handleRemoveTodo,
-  removeTodo,
   toggleTodo,
 } from "./store/slices/todoSlice";
 
 function Todo(props) {
   const { id, name, description = "", finishDate = null, completed } = props;
-
   const dispatch = useDispatch();
 
   return (
@@ -17,7 +16,9 @@ function Todo(props) {
         type={"checkbox"}
         className="checkbox"
         checked={completed}
-        onChange={() => dispatch(toggleTodo(id))}
+        onChange={() =>
+          dispatch(handleFinishTodo({ id, completed, name, description }))
+        }
       />
       <div style={{ display: "flex" }}>
         <div style={{ marginLeft: "15px" }}>{name}</div>

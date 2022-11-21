@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TodoList } from "./Todolist";
 import { InputField } from "./utils/inputField";
 import { useDispatch } from "react-redux";
-import { addTodo, fetchTodos } from "./store/slices/todoSlice";
+import { addTodo, fetchTodos, handleAddTodo } from "./store/slices/todoSlice";
 
 function MainPage() {
   const [data, setData] = useState({
@@ -16,7 +16,7 @@ function MainPage() {
   }, []);
 
   const addTask = () => {
-    if (data.name) dispatch(addTodo(data));
+    dispatch(handleAddTodo(data));
     setData({ name: "", description: "" });
   };
 

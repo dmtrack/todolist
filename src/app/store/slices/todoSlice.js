@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import config from "../../../app/config.json";
-import axios from "axios";
+
 import httpService from "../../../httpService";
+import dayjs from "dayjs";
 const URL = config.apiEndpoint;
 
 const initialState = {
@@ -25,6 +26,7 @@ const todoSlice = createSlice({
         id: action.payload.id,
         name: action.payload.name,
         description: action.payload.description,
+        finishDate: action.payload.finishDate,
         completed: false,
       });
       state.loading = false;
@@ -73,6 +75,7 @@ export function handleRemoveTodo(id) {
 export function handleAddTodo(data) {
   return async function (dispatch) {
     try {
+      data.finishDate = dayjs(data.finishDate).format("DD.MM.YY");
       const newObj = { ...data, id: Date.now(), completed: false };
       dispatch(addTodo(newObj));
       const content = await httpService.put(`${URL}todos/${newObj.id}`, newObj);
@@ -87,8 +90,8 @@ export function handleFinishTodo(data) {
   return async function (dispatch) {
     try {
       dispatch(toggleTodo(data.id));
+      console.log(data, "data");
       data.completed = !data.completed;
-      console.log(data, "toggle data");
       const content = await httpService.put(`${URL}todos/${data.id}`, data);
     } catch (error) {
       console.log(error.message);

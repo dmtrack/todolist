@@ -11,10 +11,48 @@ function TodoList() {
       {loading ? (
         <Preloader />
       ) : (
-        todos && todos.map((todo) => <Todo key={todo.id} {...todo} />)
+        <>
+          <table>
+            <thead style={{ color: "cadetblue" }}>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Finish date</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {todos && todos.map((todo) => <Todo key={todo.id} {...todo} />)}
+            </tbody>
+          </table>
+        </>
       )}
     </div>
   );
 }
 
 export { TodoList };
+
+// <table className="centered">
+//   <thead>
+//   <tr>
+//     <th>Ingredients</th>
+//     <th>Measure</th>
+//   </tr>
+//   </thead>
+//
+//   <tbody>
+//   {Object.keys(recipe).map((key) => {
+//     if (key.includes("Ingredient") && recipe[key]) {
+//       return (
+//           <tr key={key}>
+//             <td>{recipe[key]}</td>
+//             <td>{recipe[`strMeasure${key.slice(13)}`]}</td>
+//           </tr>
+//       );
+//     }
+//     return null;
+//   })}
+//   </tbody>
+// </table>

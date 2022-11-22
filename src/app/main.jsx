@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { TodoList } from "./Todolist";
 import { InputField } from "./utils/inputField";
 import { useDispatch } from "react-redux";
-import { addTodo, fetchTodos, handleAddTodo } from "./store/slices/todoSlice";
+import { fetchTodos, handleAddTodo } from "./store/slices/todoSlice";
 
 function MainPage() {
   const [data, setData] = useState({
     name: "",
     description: "",
+    finishDate: "",
   });
   const dispatch = useDispatch();
 
@@ -16,8 +17,10 @@ function MainPage() {
   }, []);
 
   const addTask = () => {
-    dispatch(handleAddTodo(data));
-    setData({ name: "", description: "" });
+    if (data.name) {
+      dispatch(handleAddTodo(data));
+      setData({ name: "", description: "", finishDate: "" });
+    }
   };
 
   const handleChange = (target) => {
@@ -32,7 +35,7 @@ function MainPage() {
       <div className="main-content">
         <div className="navi-bar">
           {" "}
-          <h1>my todoList</h1>
+          <h1>todoList</h1>
         </div>
         <div className="first-container">
           <button className="button-small" onClick={() => addTask()}>
@@ -53,6 +56,16 @@ function MainPage() {
             label="description"
             onChange={handleChange}
             width="270px"
+          />
+          <input
+            className="input-nav"
+            style={{ fontSize: "13px", marginLeft: "5px" }}
+            type="date"
+            id="finishDate"
+            name="finishDate"
+            value={data.finishDate}
+            label="finishDate"
+            onChange={(event) => handleChange(event.target)}
           />
         </div>
         <div className="second-container">

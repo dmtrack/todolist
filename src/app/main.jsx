@@ -70,7 +70,11 @@ function MainPage() {
           />
           <input
             className="file-input"
-            style={{ fontSize: "13px", marginLeft: "5px" }}
+            style={{
+              fontSize: "15px",
+              marginLeft: "5px",
+              color: "#ccc",
+            }}
             type="file"
             id="file"
             name="file"

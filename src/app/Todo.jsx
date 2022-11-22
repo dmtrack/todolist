@@ -10,7 +10,7 @@ function Todo(props) {
     description = "",
     finishDate = "",
     completed,
-    file = "",
+    url = "",
   } = props;
   const dispatch = useDispatch();
   const taskStatus = (status, date) => {
@@ -40,18 +40,20 @@ function Todo(props) {
                   name,
                   description,
                   finishDate,
-                  file,
+                  url,
                 })
               )
             }
           />
         </td>
-        <td style={{ textAlign: "center", width: "250px" }}>{name}</td>
-        <td style={{ textAlign: "left", width: "400px" }}>{description}</td>
-        <td style={{ textAlign: "center" }}>
+        <td style={{ textAlign: "center", width: "320px" }}>{name}</td>
+        <td style={{ textAlign: "center", width: "400px" }}>{description}</td>
+        <td style={{ textAlign: "center", width: "50px" }}>
           {finishDate === "Invalid Date" ? "" : finishDate}
         </td>
-        <td style={{ textAlign: "center" }}>{file}</td>
+        <td style={{ textAlign: "center", width: "50px" }}>
+          <a href={url}>{url.length > 0 ? "link" : ""}</a>
+        </td>
         <td style={{ textAlign: "center" }}>
           <button
             className="delete-button-small"

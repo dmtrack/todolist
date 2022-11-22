@@ -1,9 +1,9 @@
 import axios from "axios";
 
-import configFile from "../src/app/config.json";
-
+// import configFile from "../src/app/config.json";
+import { firebaseConfig } from "../src/firebase";
 const http = axios.create({
-  baseURL: configFile.apiEndpoint,
+  baseURL: firebaseConfig.databaseURL,
 });
 
 http.interceptors.request.use(

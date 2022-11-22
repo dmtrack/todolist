@@ -3,14 +3,20 @@ import { TodoList } from "./Todolist";
 import { InputField } from "./utils/inputField";
 import { useDispatch } from "react-redux";
 import { fetchTodos, handleAddTodo } from "./store/slices/todoSlice";
+import { storage } from "./../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 function MainPage() {
   const [data, setData] = useState({
     name: "",
     description: "",
     finishDate: "",
-    file: "",
+    id: Date.now(),
+    completed: false,
+    url: "",
   });
+  const [file, setFile] = useState(null);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,12 +24,23 @@ function MainPage() {
     // eslint-disable-next-line
   }, []);
 
-  const addTask = () => {
-    if (data.name) {
-      dispatch(handleAddTodo(data));
-      setData({ name: "", description: "", finishDate: "", file: "" });
-    }
-  };
+  function uploadImage() {
+    if (file === null) return;
+    const imageRef = ref(storage, `files/${file.name + "-" + data.id}`);
+    uploadBytes(imageRef, file).then((snapshot) => {
+      getDownloadURL(snapshot.ref)
+        .then((url) => url)
+        .then((res) => dispatch(handleAddTodo(data, res)));
+
+      setData({
+        name: "",
+        description: "",
+        finishDate: "",
+        url: "",
+      });
+      setFile(null);
+    });
+  }
 
   const handleChange = (target) => {
     setData((prevState) => ({
@@ -31,6 +48,7 @@ function MainPage() {
       [target.name]: target.value,
     }));
   };
+
   return (
     <>
       <div className="main-content">
@@ -39,7 +57,7 @@ function MainPage() {
           <h1>todoList</h1>
         </div>
         <div className="first-container">
-          <button className="button-small" onClick={() => addTask()}>
+          <button className="button-small" onClick={() => uploadImage()}>
             add todo
           </button>
           <InputField
@@ -48,7 +66,7 @@ function MainPage() {
             value={data.name}
             label="name"
             onChange={handleChange}
-            width="200px"
+            width="300px"
           />
           <InputField
             name="description"
@@ -56,7 +74,7 @@ function MainPage() {
             value={data.description}
             label="description"
             onChange={handleChange}
-            width="270px"
+            width="300px"
           />
           <input
             className="input-nav"
@@ -66,21 +84,18 @@ function MainPage() {
             name="finishDate"
             value={data.finishDate}
             label="finishDate"
-            onChange={(event) => handleChange(event.target)}
+            onChange={(event) => {
+              handleChange(event.target);
+            }}
           />
           <input
             className="file-input"
-            style={{
-              fontSize: "15px",
-              marginLeft: "5px",
-              color: "#ccc",
-            }}
             type="file"
             id="file"
             name="file"
-            value={data.file}
             label="file"
-            onChange={(event) => handleChange(event.target)}
+            input={file !== null ? file.name : null}
+            onChange={(event) => setFile(event.target.files[0])}
           />
         </div>
         <div className="second-container">

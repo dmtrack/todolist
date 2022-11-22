@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import config from "../../../app/config.json";
+import { firebaseConfig } from "../../../firebase";
 
 import httpService from "../../../httpService";
 import dayjs from "dayjs";
-const URL = config.apiEndpoint;
+const URL = firebaseConfig.databaseURL;
 
 const initialState = {
   entities: [],
@@ -28,7 +28,7 @@ const todoSlice = createSlice({
         name: action.payload.name,
         description: action.payload.description,
         finishDate: action.payload.finishDate,
-        file: action.payload.file,
+        url: action.payload.url,
         completed: false,
       });
       state.loading = false;
@@ -73,13 +73,13 @@ export function handleRemoveTodo(id) {
   };
 }
 
-export function handleAddTodo(data) {
+export function handleAddTodo(data, url) {
   return async function (dispatch) {
     try {
+      data.url = url;
       data.finishDate = dayjs(data.finishDate).format("DD.MM.YY");
-      const newObj = { ...data, id: Date.now(), completed: false };
-      dispatch(addTodo(newObj));
-      await httpService.put(`${URL}todos/${newObj.id}`, newObj);
+      await dispatch(addTodo(data));
+      await httpService.put(`${URL}todos/${data.id}`, data);
     } catch (error) {
       console.log(error.message);
     }

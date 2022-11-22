@@ -21,7 +21,6 @@ function Todo(props) {
     if (status === true) {
       style = { textDecoration: "line-through" };
     }
-    console.log(style, "style");
     return style;
   };
   const taskStyle = taskStatus(completed, finishDate);

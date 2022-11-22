@@ -13,9 +13,9 @@ function TodoList() {
       ) : (
         <>
           <table>
-            <thead style={{ color: "cadetblue" }}>
+            <thead style={{ color: "#ccc" }}>
               <tr>
-                <th></th>
+                <th>Status</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Date</th>

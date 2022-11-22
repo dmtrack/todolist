@@ -9,6 +9,7 @@ function MainPage() {
     name: "",
     description: "",
     finishDate: "",
+    file: "",
   });
   const dispatch = useDispatch();
 
@@ -19,7 +20,7 @@ function MainPage() {
   const addTask = () => {
     if (data.name) {
       dispatch(handleAddTodo(data));
-      setData({ name: "", description: "", finishDate: "" });
+      setData({ name: "", description: "", finishDate: "", file: "" });
     }
   };
 
@@ -29,7 +30,6 @@ function MainPage() {
       [target.name]: target.value,
     }));
   };
-
   return (
     <>
       <div className="main-content">
@@ -65,6 +65,16 @@ function MainPage() {
             name="finishDate"
             value={data.finishDate}
             label="finishDate"
+            onChange={(event) => handleChange(event.target)}
+          />
+          <input
+            className="file-input"
+            style={{ fontSize: "13px", marginLeft: "5px" }}
+            type="file"
+            id="file"
+            name="file"
+            value={data.file}
+            label="file"
             onChange={(event) => handleChange(event.target)}
           />
         </div>

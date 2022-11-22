@@ -155,6 +155,24 @@ input:checked + td {
     color: #818387;
 }
 
+.file-input {
+    background: #36393F;
+    color: #ccc;
+    border: 0;
+    border-radius: 4px;
+    transition: 0.3s;
+    overflow: hidden;
+    margin-top: 3px;
+    text-align: center; line-height: 20px;
+}
+.file-input:focus {
+    outline: 0;
+}
+
+.file-input:hover {
+    cursor: pointer;
+    transition: 0.3s;}
+
 
 /*.top_section {*!*/
 /*    display: flex;*/

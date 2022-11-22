@@ -1,16 +1,36 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { handleFinishTodo, handleRemoveTodo } from "./store/slices/todoSlice";
+import dayjs from "dayjs";
 
 function Todo(props) {
-  const { id, name, description = "", finishDate = "", completed } = props;
+  const {
+    id,
+    name,
+    description = "",
+    finishDate = "",
+    completed,
+    file = "",
+  } = props;
   const dispatch = useDispatch();
+  const taskStatus = (status, date) => {
+    let style = null;
+    if (dayjs().format("DD.MM.YY") > date) {
+      style = { color: "red" };
+    }
+    if (status === true) {
+      style = { textDecoration: "line-through" };
+    }
+    console.log(style, "style");
+    return style;
+  };
+  const taskStyle = taskStatus(completed, finishDate);
   return (
     <>
-      <tr>
+      <tr style={taskStyle}>
         <td className="todo">
           <input
-            type={"checkbox"}
+            type="checkbox"
             className="checkbox"
             checked={completed}
             onChange={() =>
@@ -21,6 +41,7 @@ function Todo(props) {
                   name,
                   description,
                   finishDate,
+                  file,
                 })
               )
             }
@@ -31,6 +52,7 @@ function Todo(props) {
         <td style={{ textAlign: "center" }}>
           {finishDate === "Invalid Date" ? "" : finishDate}
         </td>
+        <td style={{ textAlign: "center" }}>{file}</td>
         <td style={{ textAlign: "center" }}>
           <button
             className="delete-button-small"

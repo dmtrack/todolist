@@ -27,6 +27,7 @@ const todoSlice = createSlice({
         name: action.payload.name,
         description: action.payload.description,
         finishDate: action.payload.finishDate,
+        file: action.payload.file,
         completed: false,
       });
       state.loading = false;
@@ -75,11 +76,11 @@ export function handleRemoveTodo(id) {
 export function handleAddTodo(data) {
   return async function (dispatch) {
     try {
+      console.log(data);
       data.finishDate = dayjs(data.finishDate).format("DD.MM.YY");
       const newObj = { ...data, id: Date.now(), completed: false };
       dispatch(addTodo(newObj));
       const content = await httpService.put(`${URL}todos/${newObj.id}`, newObj);
-      console.log(content);
     } catch (error) {
       console.log(error.message);
     }
@@ -90,7 +91,6 @@ export function handleFinishTodo(data) {
   return async function (dispatch) {
     try {
       dispatch(toggleTodo(data.id));
-      console.log(data, "data");
       data.completed = !data.completed;
       const content = await httpService.put(`${URL}todos/${data.id}`, data);
     } catch (error) {

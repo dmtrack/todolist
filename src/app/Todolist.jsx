@@ -18,7 +18,8 @@ function TodoList() {
                 <th></th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Finish date</th>
+                <th>Date</th>
+                <th>File</th>
                 <th></th>
               </tr>
             </thead>

@@ -46,8 +46,8 @@ function Todo(props) {
             }
           />
         </td>
-        <td style={{ textAlign: "center" }}>{name}</td>
-        <td style={{ textAlign: "center" }}>{description}</td>
+        <td style={{ textAlign: "left", width: "250px" }}>{name}</td>
+        <td style={{ textAlign: "left", width: "400px" }}>{description}</td>
         <td style={{ textAlign: "center" }}>
           {finishDate === "Invalid Date" ? "" : finishDate}
         </td>

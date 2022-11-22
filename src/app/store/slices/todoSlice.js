@@ -22,6 +22,7 @@ const todoSlice = createSlice({
       state.loading = false;
     },
     addTodo(state, action) {
+      console.log(action.payload, "payload");
       state.entities.push({
         id: action.payload.id,
         name: action.payload.name,
@@ -65,8 +66,7 @@ export function handleRemoveTodo(id) {
   return async function (dispatch) {
     try {
       dispatch(removeTodo(id));
-      const { data } = await httpService.delete(`${URL}todos/${id}`);
-      console.log(data);
+      await httpService.delete(`${URL}todos/${id}`);
     } catch (error) {
       console.log(error.message);
     }
@@ -76,11 +76,10 @@ export function handleRemoveTodo(id) {
 export function handleAddTodo(data) {
   return async function (dispatch) {
     try {
-      console.log(data);
       data.finishDate = dayjs(data.finishDate).format("DD.MM.YY");
       const newObj = { ...data, id: Date.now(), completed: false };
       dispatch(addTodo(newObj));
-      const content = await httpService.put(`${URL}todos/${newObj.id}`, newObj);
+      await httpService.put(`${URL}todos/${newObj.id}`, newObj);
     } catch (error) {
       console.log(error.message);
     }
@@ -92,7 +91,7 @@ export function handleFinishTodo(data) {
     try {
       dispatch(toggleTodo(data.id));
       data.completed = !data.completed;
-      const content = await httpService.put(`${URL}todos/${data.id}`, data);
+      await httpService.put(`${URL}todos/${data.id}`, data);
     } catch (error) {
       console.log(error.message);
     }

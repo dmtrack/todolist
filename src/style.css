@@ -167,7 +167,7 @@ input:checked + td {
     fontSize: 15px;
     marginLeft: "5px";
     color: #ccc;
-    width: 350px;
+    width: 300px;
 }
 .file-input:focus {
     outline: 0;

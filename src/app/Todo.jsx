@@ -46,12 +46,12 @@ function Todo(props) {
             }
           />
         </td>
-        <td style={{ textAlign: "center", width: "320px" }}>{name}</td>
-        <td style={{ textAlign: "center", width: "400px" }}>{description}</td>
+        <td style={{ textAlign: "center", width: "350px" }}>{name}</td>
+        <td style={{ textAlign: "center", width: "450px" }}>{description}</td>
         <td style={{ textAlign: "center", width: "50px" }}>
           {finishDate === "Invalid Date" ? "" : finishDate}
         </td>
-        <td style={{ textAlign: "center", width: "50px" }}>
+        <td style={{ textAlign: "center", width: "100px" }}>
           <a href={url}>{url.length > 0 ? "link" : ""}</a>
         </td>
         <td style={{ textAlign: "center" }}>

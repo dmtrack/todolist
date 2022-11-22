@@ -66,7 +66,7 @@ function MainPage() {
             value={data.name}
             label="name"
             onChange={handleChange}
-            width="300px"
+            width="250px"
           />
           <InputField
             name="description"

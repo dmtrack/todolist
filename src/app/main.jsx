@@ -15,6 +15,7 @@ function MainPage() {
 
   useEffect(() => {
     dispatch(fetchTodos());
+    // eslint-disable-next-line
   }, []);
 
   const addTask = () => {

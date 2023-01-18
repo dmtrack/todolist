@@ -56,12 +56,14 @@ function MainPage() {
                     <h1>todoList</h1>
                 </div>
                 <div className="first-container">
-                    <button
-                        className="button-small"
-                        onClick={() => uploadImage()}
-                    >
-                        add todo
-                    </button>
+                    {data.name && data.finishDate && file ? (
+                        <button
+                            className="button-small"
+                            onClick={() => uploadImage()}
+                        >
+                            add todo
+                        </button>
+                    ) : null}
                     <InputField
                         name="name"
                         placeholder="name"

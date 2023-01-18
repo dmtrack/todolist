@@ -22,7 +22,6 @@ function MainPage() {
     useEffect(() => {
         dispatch(fetchTodos());
         // eslint-disable-next-line
-        console.log('hello world');
     }, []);
 
     function uploadImage() {

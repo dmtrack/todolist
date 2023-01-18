@@ -54,7 +54,7 @@ export function fetchTodos() {
     return async function (dispatch) {
         dispatch(todosRequested());
         try {
-            const { data } = await httpService.get(`${URL}todos/todos/`);
+            const { data } = await httpService.get(`${URL}todos/`);
 
             dispatch(getAllTodos(data));
         } catch (error) {
@@ -67,7 +67,7 @@ export function handleRemoveTodo(id) {
     return async function (dispatch) {
         try {
             dispatch(removeTodo(id));
-            await httpService.delete(`${URL}todos/todos/${id}`);
+            await httpService.delete(`${URL}todos/${id}`);
         } catch (error) {
             console.log(error.message);
         }
@@ -80,7 +80,7 @@ export function handleAddTodo(data, url) {
             data.url = url;
             data.finishDate = dayjs(data.finishDate).format('DD.MM.YY');
             await dispatch(addTodo(data));
-            await httpService.put(`${URL}todos/todos/${data.id}`, data);
+            await httpService.put(`${URL}todos/${data.id}`, data);
         } catch (error) {
             console.log(error.message);
         }
@@ -92,7 +92,7 @@ export function handleFinishTodo(data) {
         try {
             dispatch(toggleTodo(data.id));
             data.completed = !data.completed;
-            await httpService.put(`${URL}todos/todos/${data.id}`, data);
+            await httpService.put(`${URL}todos/${data.id}`, data);
         } catch (error) {
             console.log(error.message);
         }
